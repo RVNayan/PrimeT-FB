@@ -1,0 +1,26 @@
+.admin-dashboard section {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.admin-dashboard ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-dashboard li {
+  padding: 4px 0;
+}
+
+.user-list button {
+  background: none;
+  border: none;
+  color: blue;
+  cursor: pointer;
+}
+
+.user-list button:hover {
+  text-decoration: underline;
+}

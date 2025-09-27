@@ -29,9 +29,9 @@ function AppContent() {
       ) : (
         <div className="app">
           <Header />
-          <div className="app-body" style={{ display: "flex" }}>
+          <div className="app-body">
             <Sidebar />
-            <main className="main-content" style={{ padding: "20px", flex: 1 }}>
+            <main className="main-content">
               <Routes>
                 <Route path="/" element={<TaskList />} />
                 <Route path="/tasks" element={<TaskList />} />
