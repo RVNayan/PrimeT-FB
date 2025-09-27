@@ -1,0 +1,39 @@
+# Backend
+
+npm init -y
+
+npm i express mongoose bcryptjs jsonwebtoken dotenv cors helmet morgan express-rate-limit yup swagger-ui-express yamljs
+
+npm i -D nodemon
+
+# Frontend
+
+npm create vite@latest frontend
+cd frontend
+npm install axios react-router-dom
+
+y->React->JavaScript + SWC
+# Database
+
+First time - docker run -d --name intern-mongo -p 27017:27017 mongo:6
+
+Next time  - docker start intern-mongo
+
+docker exec -it intern-mongo mongosh
+
+.env file contents
+PORT=4000
+MONGO_URI=mongodb://localhost:27017/intern_assignment
+JWT_SECRET=supersecretkey
+JWT_EXPIRES_IN=15m
+CORS_ORIGIN=http://localhost:5173
+RATE_LIMIT_WINDOW_MS=60000
+RATE_LIMIT_MAX=100
+
+
+
+////Notes
+
+The first backend file to be prepared is src/server.js. Followed by src/app.js. This file is essential and mau contain a lot of dependecies from router/task.router.js, middleware/errorHandler.js.
+
+The Database is connected by the file src/config/db.js
