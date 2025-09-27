@@ -1,49 +1,111 @@
 // src/components/Tasks/TaskForm.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { apiService } from '../../services/api';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { apiService } from "../../services/api";
+import "../../styles/TaskForm.css";
 
 export default function TaskForm() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('low');
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    priority: "low",
+    status: "pending",
+    tags: [],
+    dueDate: ""
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTagsChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: e.target.value.split(",").map((tag) => tag.trim())
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
-      await apiService.createTask({
-        title,
-        description,
-        priority,
-        status: 'pending',
-      });
-      navigate('/tasks');
-    } catch (error) {
-      console.error('Error creating task:', error);
+      if (id) {
+        await apiService.updateTask(id, formData);
+      } else {
+        await apiService.createTask(formData);
+      }
+      navigate("/tasks");
+    } catch (err) {
+      setError(err.message || "Failed to save task");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create New Task</h2>
-      <div>
-        <label>Title:</label>
-        <input value={title} onChange={e => setTitle(e.target.value)} required />
-      </div>
-      <div>
-        <label>Description:</label>
-        <textarea value={description} onChange={e => setDescription(e.target.value)} />
-      </div>
-      <div>
-        <label>Priority:</label>
-        <select value={priority} onChange={e => setPriority(e.target.value)}>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
+    <div className="task-form-container">
+      <h2>{id ? "Edit Task" : "Add New Task"}</h2>
+      {error && <div className="error-message">{error}</div>}
+
+      <form className="task-form" onSubmit={handleSubmit}>
+        <label>Title</label>
+        <input
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Description</label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+
+        <label>Priority</label>
+        <select name="priority" value={formData.priority} onChange={handleChange}>
           <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
         </select>
-      </div>
-      <button type="submit">Create Task</button>
-    </form>
+
+        <label>Status</label>
+        <select name="status" value={formData.status} onChange={handleChange}>
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <label>Due Date</label>
+        <input
+          type="date"
+          name="dueDate"
+          value={formData.dueDate}
+          onChange={handleChange}
+        />
+
+        <label>Tags (comma-separated)</label>
+        <input
+          type="text"
+          name="tags"
+          value={formData.tags.join(", ")}
+          onChange={handleTagsChange}
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : id ? "Update Task" : "Create Task"}
+        </button>
+      </form>
+    </div>
   );
 }

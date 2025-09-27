@@ -52,16 +52,41 @@ router.get('/tasks', async (req, res) => {
   }
 });
 
+
+// POST /api/admin/tasks - Create a new task (Admin)
+router.post('/tasks', async (req, res) => {
+  try {
+    const { title, description, priority, assignedTo } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ success: false, message: "Title is required" });
+    }
+
+    const task = await Task.create({
+      title,
+      description,
+      priority: priority || "low",
+      assignedTo: assignedTo || null,
+      createdBy: req.user.id
+    });
+
+    res.status(201).json({ success: true, data: task });
+  } catch (error) {
+    console.error("Error creating admin task:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // GET /api/admin/tasks/dashboard - Admin dashboard statistics
 router.get('/tasks/dashboard', async (req, res) => {
   try {
-    // Total tasks statistics
+    // --- Global statistics ---
     const totalTasks = await Task.countDocuments();
     const completedTasks = await Task.countDocuments({ status: 'completed' });
     const pendingTasks = await Task.countDocuments({ status: 'pending' });
     const inProgressTasks = await Task.countDocuments({ status: 'in-progress' });
 
-    // User statistics
+    // --- User statistics ---
     const totalUsers = await User.countDocuments();
     const activeUsers = await User.countDocuments({ isActive: true });
 
@@ -83,6 +108,29 @@ router.get('/tasks/dashboard', async (req, res) => {
     const mediumPriorityTasks = await Task.countDocuments({ priority: 'medium' });
     const lowPriorityTasks = await Task.countDocuments({ priority: 'low' });
 
+    // --- Per-user statistics ---
+    const users = await User.find().select('_id name role isActive');
+
+    const userStats = await Promise.all(users.map(async (user) => {
+      const total = await Task.countDocuments({
+        $or: [{ createdBy: user._id }, { assignedTo: user._id }]
+      });
+
+      const completed = await Task.countDocuments({
+        $or: [{ createdBy: user._id }, { assignedTo: user._id }],
+        status: 'completed'
+      });
+
+      return {
+        id: user._id,
+        name: user.name,
+        role: user.role,
+        isActive: user.isActive,
+        totalTasks: total,
+        completedTasks: completed
+      };
+    }));
+
     res.json({
       success: true,
       data: {
@@ -91,11 +139,12 @@ router.get('/tasks/dashboard', async (req, res) => {
           completedTasks,
           pendingTasks,
           inProgressTasks,
-          completionRate: totalTasks > 0 ? (completedTasks / totalTasks * 100).toFixed(1) : 0
+          completionRate: totalTasks > 0 ? ((completedTasks / totalTasks) * 100).toFixed(1) : 0
         },
         users: {
           totalUsers,
-          activeUsers
+          activeUsers,
+          list: userStats // This contains per-user counts
         },
         recentActivity: {
           recentTasks,
@@ -109,6 +158,7 @@ router.get('/tasks/dashboard', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
