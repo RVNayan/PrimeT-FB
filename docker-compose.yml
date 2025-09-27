@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: intern-mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+    container_name: primetrade-backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend:/app:cached
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: primetrade-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app:cached
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host"]
+
+volumes:
+  mongo_data:
