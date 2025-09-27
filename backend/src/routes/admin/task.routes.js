@@ -78,6 +78,7 @@ router.post('/tasks', async (req, res) => {
 });
 
 // GET /api/admin/tasks/dashboard - Admin dashboard statistics
+// inside src/routes/admin/task.routes.js
 router.get('/tasks/dashboard', async (req, res) => {
   try {
     // --- Global statistics ---
@@ -86,51 +87,58 @@ router.get('/tasks/dashboard', async (req, res) => {
     const pendingTasks = await Task.countDocuments({ status: 'pending' });
     const inProgressTasks = await Task.countDocuments({ status: 'in-progress' });
 
-    // --- User statistics ---
+    // --- User statistics (totals) ---
     const totalUsers = await User.countDocuments();
     const activeUsers = await User.countDocuments({ isActive: true });
 
-    // Recent activity (last 7 days)
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    // recent activity...
+    const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const recentTasks = await Task.countDocuments({ createdAt: { $gte: sevenDaysAgo } });
+    const recentCompleted = await Task.countDocuments({ status: 'completed', completedAt: { $gte: sevenDaysAgo } });
 
-    const recentTasks = await Task.countDocuments({
-      createdAt: { $gte: sevenDaysAgo }
-    });
-
-    const recentCompleted = await Task.countDocuments({
-      status: 'completed',
-      completedAt: { $gte: sevenDaysAgo }
-    });
-
-    // Tasks by priority
+    // priority breakdown...
     const highPriorityTasks = await Task.countDocuments({ priority: 'high' });
     const mediumPriorityTasks = await Task.countDocuments({ priority: 'medium' });
     const lowPriorityTasks = await Task.countDocuments({ priority: 'low' });
 
-    // --- Per-user statistics ---
-    const users = await User.find().select('_id name role isActive');
+    // --- Per-user statistics (use aggregation for performance) ---
+    const users = await User.find().select('_id name role isActive').lean();
+    const userIds = users.map(u => u._id);
 
-    const userStats = await Promise.all(users.map(async (user) => {
-      const total = await Task.countDocuments({
-        $or: [{ createdBy: user._id }, { assignedTo: user._id }]
-      });
+    const agg = await Task.aggregate([
+      { $match: { $or: [{ createdBy: { $in: userIds } }, { assignedTo: { $in: userIds } }] } },
+      { $project: { createdBy: 1, assignedTo: 1, status: 1 } },
+      {
+        $project: {
+          users: { $setUnion: [ [ "$createdBy" ], [ "$assignedTo" ] ] },
+          status: 1
+        }
+      },
+      { $unwind: "$users" },
+      {
+        $group: {
+          _id: "$users",
+          totalTasks: { $sum: 1 },
+          completedTasks: { $sum: { $cond: [{ $eq: ["$status", "completed"] }, 1, 0] } }
+        }
+      }
+    ]);
 
-      const completed = await Task.countDocuments({
-        $or: [{ createdBy: user._id }, { assignedTo: user._id }],
-        status: 'completed'
-      });
-
+    const aggMap = new Map((agg || []).map(r => [String(r._id), r]));
+    const userStats = users.map(u => {
+      const id = String(u._id);
+      const stats = aggMap.get(id) || { totalTasks: 0, completedTasks: 0 };
       return {
-        id: user._id,
-        name: user.name,
-        role: user.role,
-        isActive: user.isActive,
-        totalTasks: total,
-        completedTasks: completed
+        id,
+        name: u.name,
+        role: u.role,
+        isActive: u.isActive,
+        totalTasks: stats.totalTasks || 0,
+        completedTasks: stats.completedTasks || 0
       };
-    }));
+    });
 
+    // final response
     res.json({
       success: true,
       data: {
@@ -144,7 +152,7 @@ router.get('/tasks/dashboard', async (req, res) => {
         users: {
           totalUsers,
           activeUsers,
-          list: userStats // This contains per-user counts
+          list: userStats
         },
         recentActivity: {
           recentTasks,

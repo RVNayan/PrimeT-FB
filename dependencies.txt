@@ -19,7 +19,7 @@ First time - docker run -d --name intern-mongo -p 27017:27017 mongo:6
 
 Next time  - docker start intern-mongo
 
-docker exec -it intern-mongo mongosh
+Access database - docker exec -it intern-mongo mongosh
 
 .env file contents
 PORT=4000
