@@ -1,0 +1,23 @@
+services:
+  frontend:
+    image: rnyn666140/primetrade-frontend:latest
+    ports:
+      - "5173:5173"
+
+  backend:
+    image: rnyn666140/primetrade-backend:latest
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MONGO_URI=mongodb://mongo:27017/intern_assignment
+      - JWT_SECRET=supersecretkey
+      - JWT_EXPIRES_IN=15m
+      - CORS_ORIGIN=http://localhost:5173
+      - RATE_LIMIT_WINDOW_MS=60000
+      - RATE_LIMIT_MAX=100
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"

@@ -40,14 +40,6 @@ const Sidebar = () => {
                   Admin Dashboard
                 </Link>
               </li>
-              <li>
-                <Link 
-                  to="/admin/users" 
-                  className={isActive('/admin/users') ? 'active' : ''}
-                >
-                  User Management
-                </Link>
-              </li>
             </>
           )}
         </ul>

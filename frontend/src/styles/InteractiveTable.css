@@ -1,0 +1,71 @@
+.interactive-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+  margin-bottom: 0.5rem;
+  padding: 6px 10px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.styled-table thead {
+  background: linear-gradient(90deg, #4bc0c0, #36a2eb);
+  color: white;
+}
+
+.styled-table thead th {
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  cursor: pointer;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.styled-table tbody tr:hover {
+  background: #e6f7f7;
+}
+
+.styled-table tbody td {
+  padding: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: none;
+  background: #4bc0c0;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

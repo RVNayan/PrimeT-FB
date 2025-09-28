@@ -1,25 +1,23 @@
-// src/components/Admin/UserList.jsx
 import React from "react";
-import "../../styles/AdminDashboard.css";
 
-export default function UserList({ users }) {
+export default function UserList({ users, onSelectUser, showCounts }) {
   return (
-    <table className="dashboard-table">
+    <table className="styled-table">
       <thead>
         <tr>
           <th>Name</th>
           <th>Role</th>
-          <th>Total Tasks</th>
-          <th>Completed Tasks</th>
+          {showCounts && <th>Total Tasks</th>}
+          {showCounts && <th>Completed Tasks</th>}
         </tr>
       </thead>
       <tbody>
-        {users.map(user => (
-          <tr key={user.id}>
+        {users.map((user) => (
+          <tr key={user.id} onClick={() => onSelectUser(user.id)}>
             <td>{user.name}</td>
             <td>{user.role}</td>
-            <td>{user.totalTasks}</td>
-            <td>{user.completedTasks}</td>
+            {showCounts && <td>{user.totalTasks}</td>}
+            {showCounts && <td>{user.completedTasks}</td>}
           </tr>
         ))}
       </tbody>

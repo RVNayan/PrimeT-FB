@@ -12,6 +12,7 @@ npm create vite@latest frontend
 cd frontend
 npm install axios react-router-dom
 npm i react-router-dom
+npm install recharts
 y->React->JavaScript + SWC
 # Database
 
@@ -37,3 +38,18 @@ RATE_LIMIT_MAX=100
 The first backend file to be prepared is src/server.js. Followed by src/app.js. This file is essential and mau contain a lot of dependecies from router/task.router.js, middleware/errorHandler.js.
 
 The Database is connected by the file src/config/db.js
+
+
+docker compose -f docker-compose.dev.yml up --build
+
+docker compose -f docker-compose.prod.yml up --build
+
+
+docker tag primetradeai-backend:latest  rnyn666140/primetrade-backend:latest
+docker tag primetradeai-frontend:latest rnyn666140/primetrade-frontend:latest
+
+docker push rnyn666140/primetrade-backend:latest
+docker push rnyn666140/primetrade-frontend:latest
+
+docker pull rnyn666140/primetrade-backend:latest
+docker pull rnyn666140/primetrade-frontend:latest
