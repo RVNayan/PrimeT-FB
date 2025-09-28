@@ -1,0 +1,147 @@
+
+> primetrade-backend@1.0.0 dev
+> nodemon src/server.js
+
+[33m[nodemon] 3.1.10[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node src/server.js`[39m
+[dotenv@17.2.2] injecting env (7) from .env -- tip: ⚙️  override existing env vars with { override: true }
+🔧 Environment Check:
+   MONGODB_URI: Set
+   PORT: 4000
+🚀 Starting server...
+🔗 Connecting to MongoDB...
+📡 URI: mongodb://localhost:27017/intern_assignment
+🎯 Mongoose connected to MongoDB
+✅ MongoDB Connected: localhost
+📊 Database: intern_assignment
+🎉 Server running on port 4000
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/auth/me HTTP/1.1" 200 227 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/admin/tasks/dashboard HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:21 +0000] "GET /api/admin/tasks/dashboard HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+DEBUG body at global middleware: /api/auth/login { email: 'user@test.com', password: 'user123' }
+::1 - - [28/Sep/2025:13:58:28 +0000] "POST /api/auth/login HTTP/1.1" 200 312 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:28 +0000] "GET /api/tasks?status=&priority=&search= HTTP/1.1" 200 1061 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:28 +0000] "GET /api/tasks?status=&priority=&search= HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+DEBUG body at global middleware: /api/tasks {
+  title: 'New Task ',
+  description: 'This is a test',
+  priority: 'medium',
+  status: 'completed',
+  tags: [ 'Cake' ],
+  dueDate: '2025-09-28'
+}
+=== TASK CREATION DEBUG ===
+1. Headers received: {
+  "host": "localhost:4000",
+  "connection": "keep-alive",
+  "content-length": "132",
+  "sec-ch-ua-platform": "\"Linux\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDc2YjU4NDkzN2U1MGFiOTA0ZTJkNyIsImlhdCI6MTc1OTA2NzkwOCwiZXhwIjoxNzU5NjcyNzA4fQ.26K1NhPmLu5oOGmjUDPvBdru9z5bm4wDgADXXu7uWMM",
+  "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Brave\";v=\"139\", \"Chromium\";v=\"139\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "accept": "*/*",
+  "sec-gpc": "1",
+  "accept-language": "en-GB,en;q=0.7",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-site",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd"
+}
+2. Raw body received: {
+  title: 'New Task ',
+  description: 'This is a test',
+  priority: 'medium',
+  status: 'completed',
+  tags: [ 'Cake' ],
+  dueDate: '2025-09-28'
+}
+3. Body type: object
+4. Body keys: [ 'title', 'description', 'priority', 'status', 'tags', 'dueDate' ]
+5. User authenticated: user@test.com
+7. Title value: New Task 
+8. Full body content: {
+  "title": "New Task ",
+  "description": "This is a test",
+  "priority": "medium",
+  "status": "completed",
+  "tags": [
+    "Cake"
+  ],
+  "dueDate": "2025-09-28"
+}
+::1 - - [28/Sep/2025:13:58:49 +0000] "POST /api/tasks HTTP/1.1" 400 44 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+DEBUG body at global middleware: /api/tasks {
+  title: 'New Task ',
+  description: 'This is a test',
+  priority: 'medium',
+  status: 'completed',
+  tags: [ 'Cake' ],
+  dueDate: '2025-09-29'
+}
+=== TASK CREATION DEBUG ===
+1. Headers received: {
+  "host": "localhost:4000",
+  "connection": "keep-alive",
+  "content-length": "132",
+  "sec-ch-ua-platform": "\"Linux\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZDc2YjU4NDkzN2U1MGFiOTA0ZTJkNyIsImlhdCI6MTc1OTA2NzkwOCwiZXhwIjoxNzU5NjcyNzA4fQ.26K1NhPmLu5oOGmjUDPvBdru9z5bm4wDgADXXu7uWMM",
+  "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "sec-ch-ua": "\"Not;A=Brand\";v=\"99\", \"Brave\";v=\"139\", \"Chromium\";v=\"139\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "accept": "*/*",
+  "sec-gpc": "1",
+  "accept-language": "en-GB,en;q=0.7",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-site",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd"
+}
+2. Raw body received: {
+  title: 'New Task ',
+  description: 'This is a test',
+  priority: 'medium',
+  status: 'completed',
+  tags: [ 'Cake' ],
+  dueDate: '2025-09-29'
+}
+3. Body type: object
+4. Body keys: [ 'title', 'description', 'priority', 'status', 'tags', 'dueDate' ]
+5. User authenticated: user@test.com
+7. Title value: New Task 
+8. Full body content: {
+  "title": "New Task ",
+  "description": "This is a test",
+  "priority": "medium",
+  "status": "completed",
+  "tags": [
+    "Cake"
+  ],
+  "dueDate": "2025-09-29"
+}
+9. Task data to create: {
+  title: 'New Task ',
+  description: 'This is a test',
+  priority: 'medium',
+  status: 'completed',
+  tags: [ 'Cake' ],
+  dueDate: '2025-09-29',
+  createdBy: new ObjectId('68d76b584937e50ab904e2d7'),
+  assignedTo: new ObjectId('68d76b584937e50ab904e2d7')
+}
+10. Task created successfully
+::1 - - [28/Sep/2025:13:58:53 +0000] "POST /api/tasks HTTP/1.1" 201 524 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:53 +0000] "GET /api/tasks?status=&priority=&search= HTTP/1.1" 200 1524 "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+::1 - - [28/Sep/2025:13:58:53 +0000] "GET /api/tasks?status=&priority=&search= HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
