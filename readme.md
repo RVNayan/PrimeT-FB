@@ -22,14 +22,15 @@ Admin Features:
 Setup & Running the Project
 ---------------------------
 
-1. Running Locally
+## Method 1. Running Locally
 
-Backend:
+### step i. Backend:
 - Navigate to the backend folder:
   ```cd backend```
 - Install dependencies:
   ```npm install```
 
+### step ii
 Create a `.env` file with the following content:
 ```
 PORT=4000
@@ -41,9 +42,11 @@ RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX=100
 ```
 
+### step iII
 Run MongoDB locally:
 ```mongod --dbpath /path/to/data```
 
+### step iv
 Start the backend:
 ```npm run dev```
 
@@ -58,7 +61,7 @@ Frontend:
 Open the app in your browser:
 http://localhost:5173
 
-2. Running via Docker Compose (Recommended)
+## Method 2. Running via Docker Compose (Recommended)
 
 Ensure Docker is running, then pull the images:
 
@@ -86,3 +89,6 @@ Notes
 - JWT token is returned after login for authentication.
 - For local setup, MongoDB must be running separately.
 - Docker Compose setup is recommended for a consistent environment.
+
+
+[Manual](PrimeTrade_Doc.pdf)
